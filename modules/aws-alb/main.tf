@@ -1,13 +1,13 @@
 // ELB ( Elastic Load Balancing ) 영역
-resource "aws_lb" "my_lb" {
-  name               = "my-lb"
+resource "aws_lb" "my_alb" {
+  name               = "${var.name}-alb"
   load_balancer_type = "application"
-  security_groups    = [aws_security_group.http_sg.id]
-  subnets            = [aws_subnet.my_vpc_public_subnet1.id, aws_subnet.my_vpc_public_subnet2.id]
+  security_groups    = [var.HTTP_HTTPS_SG_ID]
+  subnets            = var.public_subnets
 }
 
-resource "aws_lb_listener" "my_lb_listener" {
-  load_balancer_arn = aws_lb.my_lb.arn
+resource "aws_lb_listener" "my_alb_listener" {
+  load_balancer_arn = aws_lb.my_alb.arn
   port              = 80
   protocol          = "HTTP"
 
@@ -21,8 +21,8 @@ resource "aws_lb_listener" "my_lb_listener" {
   }
 }
 
-resource "aws_lb_listener_rule" "my_lb_listener_rule" {
-  listener_arn = aws_lb_listener.my_lb_listener.arn
+resource "aws_lb_listener_rule" "my_alb_listener_rule" {
+  listener_arn = aws_lb_listener.my_alb_listener.arn
   priority     = 100
   condition {
     path_pattern {
@@ -31,15 +31,15 @@ resource "aws_lb_listener_rule" "my_lb_listener_rule" {
   }
   action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.my_lb_tg.arn
+    target_group_arn = aws_lb_target_group.my_alb_tg.arn
   }
 }
 
-resource "aws_lb_target_group" "my_lb_tg" {
-  name     = "my-lb-tg"
+resource "aws_lb_target_group" "my_alb_tg" {
+  name     = "${var.name}-alb-tg"
   port     = 80
   protocol = "HTTP"
-  vpc_id   = aws_vpc.my_vpc.id
+  vpc_id   = var.vpc_id
 
   health_check {
     path                = "/"

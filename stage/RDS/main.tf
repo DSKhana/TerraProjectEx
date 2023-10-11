@@ -21,11 +21,11 @@ provider "aws" {
 }
 
 module "app1_db" {
-  source                              = "github.com/DSKhanna/Terraform_project_RDS"
+  source                              = "github.com/DSKhana/terraform-aws-rds"
   identifier                          = "stage-app1-db"
   engine                              = "mysql"
   engine_version                      = "5.7.42"
-  instance                            = "db.t3.micro"
+  instance_class                      = "db.t3.micro"
   allocated_storage                   = 5
   multi_az                            = false
   iam_database_authentication_enabled = true
@@ -43,11 +43,12 @@ module "app1_db" {
     }
   ]
 
-  major_engine_version   = "5.7"
-  db_name                = "webdb"
-  username               = "admin"
-  password               = "RDSterraform123!"
-  port                   = "3306"
+  major_engine_version = "5.7"
+  db_name              = "webdb"
+  username             = "admin"
+  password             = "RDSterraform123!"
+  port                 = "3306"
+
   db_subnet_group_name   = data.terraform_remote_state.vpc_remote_data.outputs.database_subnet_group
   subnet_ids             = data.terraform_remote_state.vpc_remote_data.outputs.database_subnets
   vpc_security_group_ids = [data.terraform_remote_state.vpc_remote_data.outputs.RDS_SG]

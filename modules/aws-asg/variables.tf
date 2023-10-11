@@ -1,39 +1,34 @@
 variable "instance_type" {
-  description = "instance_type"
-  type        = string
-}
-
-variable "name" {
-  description = "asg name"
-  type        = string
-}
-
-variable "SSH_SG_ID" {
-  description = "sg for ssh"
-  type        = string
-}
-
-variable "HTTP_HTTPS_SG_ID" {
-  description = "sg for http and https"
-  type        = string
-}
-
-variable "desired_capacity" {
-  description = "asg_desired_capacity"
+  description = "EC2 Instance Type"
   type        = string
 }
 
 variable "min_size" {
-  description = "asg_min_size"
+  description = "ASG Min Size"
   type        = number
 }
 
 variable "max_size" {
-  description = "asg_max_size"
+  description = "ASG Max Size"
   type        = number
 }
 
+variable "name" {
+  description = "ENV name (Stage or Prod)"
+  type        = string
+}
+
 variable "private_subnets" {
-  description = "private_subents"
+  description = "Private Subents"
+  type        = list(string)
+}
+
+variable "SSH_SG_ID" {
+  description = "SSH SG ID"
+  type        = string
+}
+
+variable "HTTP_HTTPS_SG_ID" {
+  description = "HTTP HTTPS SG ID"
   type        = string
 }

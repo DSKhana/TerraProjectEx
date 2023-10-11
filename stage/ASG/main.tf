@@ -23,11 +23,10 @@ provider "aws" {
 module "stage_asg" {
   source           = "../../modules/aws-asg"
   instance_type    = "t2.micro"
-  desired_capacity = "1"
   min_size         = "1"
   max_size         = "1"
   name             = "stage"
   private_subnets  = data.terraform_remote_state.vpc_remote_data.outputs.public_subnets
-  SSH_SG_ID        = data.terraform_remote_state.vpc_remote_data.outputs.SSG_SG
+  SSH_SG_ID        = data.terraform_remote_state.vpc_remote_data.outputs.SSH_SG
   HTTP_HTTPS_SG_ID = data.terraform_remote_state.vpc_remote_data.outputs.HTTP_HTTPS_SG
 }

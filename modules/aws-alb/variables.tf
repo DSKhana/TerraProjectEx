@@ -1,5 +1,5 @@
 variable "name" {
-  description = "alb name"
+  description = "env Name (Stage or Pord)"
   type        = string
 }
 
@@ -10,7 +10,7 @@ variable "vpc_id" {
 
 variable "public_subnets" {
   description = "public_subnets"
-  type        = string
+  type        = list(string)
 }
 
 variable "HTTP_HTTPS_SG_ID" {

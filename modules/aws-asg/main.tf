@@ -23,6 +23,29 @@ resource "aws_launch_configuration" "aws_asg_launch" {
   }
 }
 
+resource "aws_autoscaling_group" "aws_asg" {
+  name                 = "${var.name}-asg"
+  launch_configuration = aws_launch_configuration.aws_asg_launch.name
+  min_size             = var.min_size
+  max_size             = var.max_size
+  vpc_zone_identifier  = var.private_subnets
+
+  target_group_arns    = [data.terraform_remote_state.app1_remote_data.outputs.ALB_TG]
+  health_check_type    = "ELB"
+
+  lifecycle {
+    create_before_destroy = true
+  }
+
+  min_elb_capacity = var.min_size
+
+  tag {
+    key                 = "Name"
+    value               = "${var.name}_Terraform_Instance"
+    propagate_at_launch = true
+  }
+}
+
 resource "aws_autoscaling_policy" "aws_asg_policy_out" {
   name                   = "${var.name}-asg-policy-out"
   adjustment_type        = "ChangeInCapacity"
@@ -38,7 +61,7 @@ resource "aws_cloudwatch_metric_alarm" "aws_asg_cpu_alert_out" {
   period              = 60
   namespace           = "AWS/EC2"
   threshold           = 70
-  comparison_operator = "GreatorThanOrEqualToThreshold"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = 2
   dimensions = {
     AutoScalingGroupName = aws_autoscaling_group.aws_asg.name
@@ -52,7 +75,7 @@ resource "aws_autoscaling_policy" "aws_asg_policy_in" {
   adjustment_type        = "ChangeInCapacity"
   scaling_adjustment     = -1
   cooldown               = 120
-  autoscaling_group_name = aws_autoscaling_policy.aws_asg.name
+  autoscaling_group_name = aws_autoscaling_policy.aws_asg_policy_out.name
 }
 
 resource "aws_cloudwatch_metric_alarm" "aws_asg_cpu_alarm_in" {
@@ -69,27 +92,4 @@ resource "aws_cloudwatch_metric_alarm" "aws_asg_cpu_alarm_in" {
   }
   alarm_description = "This metric monitors ec2 cpu utilization"
   alarm_actions     = [aws_autoscaling_policy.aws_asg_policy_in.arn]
-}
-
-resource "aws_autoscaling_group" "aws_asg" {
-  name                 = "${var.name}-${aws_launch_configuration.aws_asg_launch.name}"
-  launch_configuration = aws_launch_configuration.aws_asg_launch.name
-  desired_capacity     = var.desired_capacity
-  min_size             = var.min_size
-  max_size             = var.max_size
-  vpc_zone_identifier  = [var.private_subnets]
-  target_group_arns    = [data.terraform_remote_state.alb_remote_data.outputs.ALB_TG]
-  health_check_type    = "ELB"
-
-  lifecycle {
-    create_before_destroy = true
-  }
-
-  min_elb_capacity = var.min_size
-
-  tag {
-    key                 = "Name"
-    value               = "${var.name}_Terraform_Instance"
-    propagate_at_launch = true
-  }
 }
