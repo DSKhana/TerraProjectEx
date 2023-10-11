@@ -20,6 +20,7 @@ provider "aws" {
   profile = "terraform_user"
 }
 
+/* 
 module "SSH_Security_group" {
   source          = "github.com/DSKhana/Terraform_Project_SG"
   name            = "SSH_SG"
@@ -77,4 +78,4 @@ module "HTTP_HTTPS_SG" {
       cidr_blocks = local.all_network
     }
   ]
-}
+} */
