@@ -1,4 +1,3 @@
-// ELB ( Elastic Load Balancing ) 영역
 resource "aws_lb" "my_alb" {
   name               = "${var.name}-alb"
   load_balancer_type = "application"
@@ -24,11 +23,13 @@ resource "aws_lb_listener" "my_alb_listener" {
 resource "aws_lb_listener_rule" "my_alb_listener_rule" {
   listener_arn = aws_lb_listener.my_alb_listener.arn
   priority     = 100
+  
   condition {
     path_pattern {
       values = ["*"]
     }
   }
+  
   action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.my_alb_tg.arn

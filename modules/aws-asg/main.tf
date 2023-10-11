@@ -8,6 +8,7 @@ resource "aws_launch_configuration" "aws_asg_launch" {
   instance_type   = var.instance_type
   key_name        = data.aws_key_pair.EC2-Key.key_name
   security_groups = [var.SSH_SG_ID, var.HTTP_HTTPS_SG_ID]
+  
   user_data       = <<-EOF
   #!/bin/bash
   yum -y update
@@ -63,9 +64,11 @@ resource "aws_cloudwatch_metric_alarm" "aws_asg_cpu_alert_out" {
   threshold           = 70
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = 2
+ 
   dimensions = {
     AutoScalingGroupName = aws_autoscaling_group.aws_asg.name
   }
+ 
   alarm_description = "This metric monitors ec2 cpu utilization"
   alarm_actions     = [aws_autoscaling_policy.aws_asg_policy_out.arn]
 }
@@ -87,9 +90,11 @@ resource "aws_cloudwatch_metric_alarm" "aws_asg_cpu_alarm_in" {
   threshold           = 10
   comparison_operator = "LessThanOrEqualToThreshold"
   evaluation_periods  = 2
+
   dimensions = {
     AutoScalingGroupName = aws_autoscaling_group.aws_asg.name
   }
+
   alarm_description = "This metric monitors ec2 cpu utilization"
   alarm_actions     = [aws_autoscaling_policy.aws_asg_policy_in.arn]
 }

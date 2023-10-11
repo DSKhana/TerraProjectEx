@@ -1,5 +1,5 @@
 variable "name" {
-  description = "env Name (Stage or Pord)"
+  description = "ENV Name (Stage or Pord)"
   type        = string
 }
 

@@ -26,7 +26,7 @@ module "stage_asg" {
   min_size         = "1"
   max_size         = "1"
   name             = "stage"
-  private_subnets  = data.terraform_remote_state.vpc_remote_data.outputs.public_subnets
+  private_subnets  = data.terraform_remote_state.vpc_remote_data.outputs.private_subnets
   SSH_SG_ID        = data.terraform_remote_state.vpc_remote_data.outputs.SSH_SG
   HTTP_HTTPS_SG_ID = data.terraform_remote_state.vpc_remote_data.outputs.HTTP_HTTPS_SG
 }

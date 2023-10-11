@@ -27,3 +27,13 @@ output "private_subnet2" {
   value       = aws_subnet.my_vpc_private_subnet2.id
   description = "private_subnet2"
 }
+
+output "private_subnet3" {
+  value       = aws_subnet.my_vpc_private_subnet3.id
+  description = "private_subnet3"
+}
+
+output "private_subnet4" {
+  value       = aws_subnet.my_vpc_private_subnet4.id
+  description = "private_subnet4"
+}

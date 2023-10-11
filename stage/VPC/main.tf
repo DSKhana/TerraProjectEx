@@ -31,7 +31,7 @@ module "stage_vpc" {
   database_subnets = local.database_subnets
 
   enable_dns_hostnames = "true"
-  enable_dns_support  = "true"
+  enable_dns_support   = "true"
 
   enable_nat_gateway     = true
   single_nat_gateway     = true
@@ -148,7 +148,6 @@ resource "aws_eip" "BastionHost_eip" {
 }
 
 # BastionHost Instance (
-
 resource "aws_instance" "BastionHost" {
   ami                         = "ami-0ea4d4b8dc1e46212"
   instance_type               = "t2.micro"
