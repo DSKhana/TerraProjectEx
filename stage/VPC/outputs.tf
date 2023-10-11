@@ -1,25 +1,45 @@
-output "vpc_id" {
-  value       = module.stage_vpc.vpc_id
-  description = "VPC_ID"
+# BastionHost EIP Output
+output "EC2_Pub_IP" {
+  value       = aws_eip.BastionHost_eip.public_ip
+  description = "EC2 Instance Public IP Address"
 }
 
-// ip주소가 아니라 id값으로 가져와짐
+output "vpc_id" {
+  value       = module.stage_vpc.vpc_id
+  description = "VPC ID Output"
+}
+
 output "public_subnets" {
   value       = module.stage_vpc.public_subnets
-  description = "Public Subnets (List)"
+  description = "Public_Subnets Output"
 }
 
 output "private_subnets" {
   value       = module.stage_vpc.private_subnets
-  description = "Private Subnets (List)"
+  description = "Private_Subnets Output"
 }
 
-output "ssh_sg_id" {
-  value       = module.SSH_Security_group.security_group_id
-  description = "SSH Security Group ID"
+output "database_subnets" {
+  value       = module.stage_vpc.database_subnets
+  description = "Database_Subnets Output"
 }
 
-output "alb_sg_id" {
-  value       = module.ALB_Security_group.security_group_id
-  description = "ALB Security Group ID"
+output "database_subnet_group" {
+  value       = module.stage_vpc.database_subnet_group
+  description = "Database_Subnet_Group Output"
+}
+
+output "SSH_SG" {
+  value       = module.SSH_SG.security_group_id
+  description = "SSH Security-Group Output"
+}
+
+output "HTTP_HTTPS_SG" {
+  value       = module.HTTP_HTTPS_SG.security_group_id
+  description = "HTTP_HTTPS Security-Group Output"
+}
+
+output "RDS_SG" {
+  value       = module.RDS_SG.security_group_id
+  description = "SDS Security-Group Output"
 }
